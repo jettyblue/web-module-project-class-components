@@ -44,20 +44,23 @@ export default class App extends React.Component {
     return (
       <div>
         <h2>Things I Have To Do:</h2>
-        <div>
-          <ul>
-            {
-              this.state.tasks.map(task => (
-                <li key={task.id}>{task.task}</li>
-              ))
-            }
-          </ul>
-        </div>
-        <Form
-          onSubmit={this.onSubmit}
-          onChange={this.onChange}
-          taskInput={this.state.taskInput}
-        />
+        <ul>
+          {
+            this.state.tasks.map(task => (
+              <li key={task.id}>{task.task}</li>
+            ))
+          }
+        </ul>
+        <form onSubmit={this.onSubmit}>
+            <input
+              onChange={this.onChange}
+              value={this.state.taskInput}
+              type='text'
+              id='taskInput'
+              placeholder='Type a new task'
+            />
+            <input type='submit' />
+        </form>
       </div>
     )
   }
