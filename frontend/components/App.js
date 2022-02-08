@@ -1,25 +1,10 @@
 import React from 'react'
-import Form from './Form';
+
 import Todo from './Todo';
 import TodoList from './TodoList';
+import Form from './Form';
 
 // import styles from '../styles/styles.css';
-
-// const initialState = {
-//   tasks: [
-//     { 
-//       task: 'Organize Garage', 
-//       id: 1528817077286, 
-//       completed: false
-//     },
-//     {
-//       task: 'Bake Cookies',
-//       id: 1528817084358,
-//       completed: false
-//     }
-//   ],
-//   taskInput: ''
-// }
 
 export default class App extends React.Component {
   constructor() {
@@ -50,45 +35,59 @@ export default class App extends React.Component {
     }
   }
 
-  // state = initialState;
+  handleAdd = (task) => {
+    const newTodo = {
+      task: task,
+      id: Date.now(),
+      completed: false
+    };
+    // 1) setState  2) change todos  3) make a copy of todos  4) add a new todo to the end
+    this.setState({
+      ...this.state,
+      todos: [...this.state.todos, newTodo]
+    });
+  }
 
-  // componentDidMount() {
-  //   this.state.tasks;
-  // }
+  handleClear = () => {
+    // console.log('clear clicked')
+    // 1) setState  2) loop through all todos
+    // 3) remove all todos that have completed=true  4) save filtered todos to state
+    this.setState({
+      ...this.state,
+      todos: this.state.todos.filter(todo => {
+        return (
+          todo.completed === false
+        );
+      })
+    })
+  }
 
-  // onChange = evt => {
-  //   const { value } = evt.target;
-  //   this.setState({ ...this.state, taskInput: value })
-  // }
-
-  // onSubmit = evt => {
-  //   evt.preventDefault()
-  //   const newTodo = {
-  //     id: Date.now(),
-  //     name: this.state.taskInput,
-  //     completed: false
-  //   }
-  //   this.setState({ ...this.state, tasks: [this.state.taskInput, newTodo] })
-  // }
+  handleToggle = (clickedId) => {
+    // 1) setState  2) change todos  3) find the todos clicked on
+    // 4) flip the value of completed for that todo  5) keep all other todos the same
+    this.setState({
+      ...this.state,
+      todos: this.state.todos.map(todo => {
+        if(todo.id === clickedId) {
+          return {
+            ...todo, completed: !todo.completed
+          }
+        } else {
+          return todo;
+        }
+      })
+    })
+  }
 
   render() {
     const { todos } = this.state;
-    console.log(todos);
+    // console.log(todos);
     return (
       <div>
         <h1>Things I Have To Do:</h1>
-        <ul>
-          {
-            todos.map(todo => {
-              return (<Todo todo={todo}/>)
-            })
-          }
-        </ul>
-        <form>
-          <input/>
-          <button>Add</button>
-        </form>
-        <button>Clear</button>
+        <TodoList handleToggle={this.handleToggle} todos={todos} />
+        <Form handleAdd={this.handleAdd} />
+        <button onClick={this.handleClear}>Clear Completed</button>
       </div>
     )
   }

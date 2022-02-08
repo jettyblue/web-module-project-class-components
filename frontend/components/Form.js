@@ -1,17 +1,32 @@
 import React from 'react'
 
 export default class Form extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      input: ''
+    }
+  }
+  handleSubmit = evt => {
+    evt.preventDefault();
+    // console.log('Add clicked');
+    // console.log(this.props);
+    this.props.handleAdd(this.state.input);
+  }
+
+  handleChange = evt => {
+    this.setState({
+      ...this.state,
+      input: evt.target.value
+    })
+  }
+
   render() {
+    // console.log(this.state.input)
     return (
-      <form onSubmit={this.props.onSubmit}>
-        <input
-          onChange={this.props.onChange}  
-          value={this.props.taskInput}
-          type='text'
-          id='taskInput'
-          placeholder='Type a new task'
-        />
-        <button>Add Todo</button>
+      <form>
+        <input onChange={this.handleChange}/>
+        <button onClick={this.handleSubmit}>Add Todo</button>
       </form>
     )
   }
