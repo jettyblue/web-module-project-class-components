@@ -25,7 +25,7 @@ export default class Form extends React.Component {
     // console.log(this.state.input)
     return (
       <form>
-        <input onChange={this.handleChange}/>
+        <input placeholder='Enter a New Task' onChange={this.handleChange}/>
         <button onClick={this.handleSubmit}>Add Todo</button>
       </form>
     )

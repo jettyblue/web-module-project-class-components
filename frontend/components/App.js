@@ -41,7 +41,7 @@ export default class App extends React.Component {
   componentDidMount() {
     axios.get('http://localhost:9000/api/todos')
       .then(res => {
-        console.log(res.data.data)
+        // console.log(res.data.data)
         this.setState({ ...this.state, todos: res.data.data })
       })
       .catch(err => {
@@ -49,44 +49,44 @@ export default class App extends React.Component {
       })
   }
 
-  // componentDidUpdate(oldProps, oldState) {
-  //   if(this.state.todos !== oldState.todos) {
-  //     axios.get(`http://localhost:9000/api/todos/${this.state.todos}`)
-  //       .then(res => {
-  //         this.setState({ ...this.state, todos: res.data.data })
-  //       })
-  //       .catch(err => {
-  //         console.error(err)
-  //       })
-  //   }
-  // }
+  componentDidUpdate(oldProps, oldState) {
+    if(this.state.name !== oldState.name) {
+      axios.get(`http://localhost:9000/api/todos/${this.state.name}`)
+        .then(res => {
+          this.setState({ ...this.state, todos: res.data.data })
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
+  }
 
-  // onDelete = id => evt => {
-  //   axios.delete(`${this.state.todos}`)
-  //     .then(res => {
-  //       this.setState({
-  //         ...this.state,
-  //         id: this.state.todos.filter(ex => {
-  //           return ex.id !==id
-  //         })
-  //       })
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //     })
-  // }
+  onDelete = id => evt => {
+    axios.delete(`http://localhost:9000/api/todos/${this.state.name}`)
+      .then(res => {
+        this.setState({
+          ...this.state,
+          todos: this.state.todos.filter(ex => {
+            return ex.id !==id
+          })
+        })
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
 
 
-  handleAdd = (task) => {
+  handleAdd = (name) => {
     const newTodo = {
-      task: task,
+      name: name,
       id: Date.now(),
       completed: false
     }
     const payload = {name: ""}
     axios.post(`http://localhost:9000/api/todos`, this.state.name, payload)
       .then(res => {
-        console.log(res)
+        // console.log(res)
       })
     // 1) setState  2) change todos  3) make a copy of todos  4) add a new todo to the end
     this.setState({
@@ -112,7 +112,7 @@ export default class App extends React.Component {
   handleToggle = (clickedId) => {
     axios.get(`http://localhost:9000/api/todos/${clickedId}`)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
       this.setState({
         ...this.state,
         todos: this.state.todos.map(todo => {
