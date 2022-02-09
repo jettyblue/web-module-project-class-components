@@ -7,74 +7,74 @@ import Form from './Form';
 
 // import styles from '../styles/styles.css';
 
-const URL = 'http://localhost:9000/api/todos';
+// const URL = 'http://localhost:9000/api/todos';
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       todos: [
-  //       { 
-  //         task: 'Organize Garage', 
-  //         id: 1528817077286, 
-  //         completed: false
-  //       },
-  //       {
-  //         task: 'Bake Cookies',
-  //         id: 1528817084358,
-  //         completed: false
-  //       },
-  //       { 
-  //         task: 'Walk the Dog', 
-  //         id: 1528817076543, 
-  //         completed: false
-  //       },
-  //       {
-  //         task: 'Do Homework',
-  //         id: 1528817083456,
-  //         completed: false
-  //       }
+        { 
+          task: 'Organize Garage', 
+          id: 1528817077286, 
+          completed: false
+        },
+        {
+          task: 'Bake Cookies',
+          id: 1528817084358,
+          completed: false
+        },
+        { 
+          task: 'Walk the Dog', 
+          id: 1528817076543, 
+          completed: false
+        },
+        {
+          task: 'Do Homework',
+          id: 1528817083456,
+          completed: false
+        }
       ]
     }
   }
 
   componentDidMount() {
-    axios.get(URL)
+    axios.get('http://localhost:9000/api/todos')
       .then(res => {
-        console.log(res)
-        this.setState({ ...this.state, todos: res.data })
+        console.log(res.data.data)
+        this.setState({ ...this.state, todos: res.data.data })
       })
       .catch(err => {
         console.error(err)
       })
   }
 
-  componentDidUpdate(oldProps, oldState) {
-    if(this.state.todos !== oldState.todos) {
-      axios.get(`http://localhost:9000/api/todos/${this.state.todos}`)
-        .then(res => {
-          this.setState({ ...this.state, todos: res.data })
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    }
-  }
+  // componentDidUpdate(oldProps, oldState) {
+  //   if(this.state.todos !== oldState.todos) {
+  //     axios.get(`http://localhost:9000/api/todos/${this.state.todos}`)
+  //       .then(res => {
+  //         this.setState({ ...this.state, todos: res.data.data })
+  //       })
+  //       .catch(err => {
+  //         console.error(err)
+  //       })
+  //   }
+  // }
 
-  onDelete = id => evt => {
-    axios.delete(`${this.state.todos}`)
-      .then(res => {
-        this.setState({
-          ...this.state,
-          id: this.state.todos.filter(ex => {
-            return ex.id !==id
-          })
-        })
-      })
-      .catch(err => {
-        console.error(err);
-      })
-  }
+  // onDelete = id => evt => {
+  //   axios.delete(`${this.state.todos}`)
+  //     .then(res => {
+  //       this.setState({
+  //         ...this.state,
+  //         id: this.state.todos.filter(ex => {
+  //           return ex.id !==id
+  //         })
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.error(err);
+  //     })
+  // }
 
 
   handleAdd = (task) => {
