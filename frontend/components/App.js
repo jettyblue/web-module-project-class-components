@@ -82,7 +82,12 @@ export default class App extends React.Component {
       task: task,
       id: Date.now(),
       completed: false
-    };
+    }
+    const payload = {name: ""}
+    axios.post(`http://localhost:9000/api/todos`, this.state.name, payload)
+      .then(res => {
+        console.log(res)
+      })
     // 1) setState  2) change todos  3) make a copy of todos  4) add a new todo to the end
     this.setState({
       ...this.state,
@@ -105,18 +110,20 @@ export default class App extends React.Component {
   }
 
   handleToggle = (clickedId) => {
-    // 1) setState  2) change todos  3) find the todos clicked on
-    // 4) flip the value of completed for that todo  5) keep all other todos the same
-    this.setState({
-      ...this.state,
-      todos: this.state.todos.map(todo => {
-        if(todo.id === clickedId) {
-          return {
-            ...todo, completed: !todo.completed
+    axios.get(`http://localhost:9000/api/todos/${clickedId}`)
+      .then(res => {
+        console.log(res.data)
+      this.setState({
+        ...this.state,
+        todos: this.state.todos.map(todo => {
+          if(todo.id === clickedId) {
+            return {
+              ...todo, completed: !todo.completed
+            }
+          } else {
+            return todo
           }
-        } else {
-          return todo;
-        }
+        })
       })
     })
   }
@@ -128,7 +135,7 @@ export default class App extends React.Component {
       <div>
         <h1>Things I Have To Do:</h1>
         <TodoList handleToggle={this.handleToggle} todos={todos} />
-        <Form handleAdd={this.handleAdd} />
+        <Form handleSubmit={this.handleSubmit} handleAdd={this.handleAdd} />
         <button onClick={this.handleClear}>Clear Completed</button>
       </div>
     )
